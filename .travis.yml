@@ -1,33 +1,19 @@
 sudo: false
 
-language: cpp
+language: python
 
-compiler:
-    - gcc
+python:
+   - "3.5"
 
-addons:
-  apt:
-    sources:
-      - ubuntu-toolchain-r-test
-    packages:
-      - libboost-all-dev
-      - doxygen
-      - g++-5
-      - libgtest-dev
-      - valgrind
+before_install:
+    - pip install --upgrade pip
 
 install:
-    - pwd
-    - ls -al
-    - mkdir gtest
-    - cd gtest
-    - export LIBRARY_PATH=$(pwd)
-    - cp -r /usr/src/gtest/* ./
-    - cmake -D CMAKE_INSTALL_PREFIX:PATH=./ ./
-    - make
-    - pwd
-    - ls -al
-    - cd -
+    - pip install autopep8
+    - pip install coverage
+    - pip install mypy
+    - pip install numpy
+    - pip install pylint
 
 before_script:
     - uname -a

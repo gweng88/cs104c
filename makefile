@@ -1,61 +1,40 @@
 .DEFAULT_GOAL := all
 
-ifeq ($(shell uname), Darwin)                                           # Apple
-    CXX          := g++
-    INCLUDE      := /usr/local/include
-    CXXFLAGS     := -pedantic -std=c++14 -Wall -Weffc++
-    LIBB         := /usr/local/lib
-    LIBG         := /usr/local/lib
-    LDFLAGS      := -lgtest -lgtest_main
-    CLANG-CHECK  := clang-check
-    GCOV         := gcov
-    GCOVFLAGS    := -fprofile-arcs -ftest-coverage
-    VALGRIND     := valgrind
-    DOXYGEN      := doxygen
-    CLANG-FORMAT := clang-format
-else ifeq ($(CI), true)                                                 # Travis CI
-    CXX          := g++-5
-    INCLUDE      := /usr/include
-    CXXFLAGS     := -pedantic -std=c++14 -Wall -Weffc++
-    LIBB         := /usr/lib/x86_64-linux-gnu/
-    LIBG         := $(PWD)/gtest
-    LDFLAGS      := -lgtest -lgtest_main -pthread
-    CLANG-CHECK  := clang-check
-    GCOV         := gcov-5
-    GCOVFLAGS    := -fprofile-arcs -ftest-coverage
-    VALGRIND     := valgrind
-    DOXYGEN      := doxygen
-    CLANG-FORMAT := clang-format
-else ifeq ($(shell uname -p), unknown)                                  # Docker
-    CXX          := g++
-    INCLUDE      := /usr/include
-    CXXFLAGS     := -pedantic -std=c++14 -Wall -Weffc++
-    LIBB         := /usr/lib
-    LIBG         := /usr/lib
-    LDFLAGS      := -lgtest -lgtest_main -pthread
-    CLANG-CHECK  := clang-check
-    GCOV         := gcov
-    GCOVFLAGS    := -fprofile-arcs -ftest-coverage
-    VALGRIND     := valgrind
-    DOXYGEN      := doxygen
-    CLANG-FORMAT := clang-format-3.5
-else                                                                    # UTCS
-    CXX          := g++
-    INCLUDE      := /usr/include
-    CXXFLAGS     := -pedantic -std=c++14 -Wall -Weffc++
-    LIBB         := /usr/lib/x86_64-linux-gnu
-    LIBG         := /usr/local/lib
-    LDFLAGS      := -lgtest -lgtest_main -pthread
-    CLANG-CHECK  := clang-check
-    GCOV         := gcov
-    GCOVFLAGS    := -fprofile-arcs -ftest-coverage
-    VALGRIND     := valgrind
-    DOXYGEN      := doxygen
-    CLANG-FORMAT := clang-format-3.8
+ifeq ($(shell uname), Darwin)          # Apple
+    PYTHON   := python3
+    PIP      := pip
+    MYPY     := mypy
+    PYLINT   := pylint
+    COVERAGE := coverage
+    PYDOC    := pydoc
+    AUTOPEP8 := autopep8
+else ifeq ($(CI), true)                # Travis CI
+    PYTHON   := python3.5
+    PIP      := pip3.5
+    MYPY     := mypy
+    PYLINT   := pylint
+    COVERAGE := coverage-3.5
+    PYDOC    := pydoc3.5
+    AUTOPEP8 := autopep8
+else ifeq ($(shell uname -p), unknown) # Docker
+    PYTHON   := python3.5
+    PIP      := pip3.5
+    MYPY     := mypy
+    PYLINT   := pylint
+    COVERAGE := coverage-3.5
+    PYDOC    := pydoc3.5
+    AUTOPEP8 := autopep8
+else                                   # UTCS
+    PYTHON   := python3
+    PIP      := pip3
+    MYPY     := mypy
+    PYLINT   := pylint3
+    COVERAGE := coverage-3.5
+    PYDOC    := pydoc3.5
+    AUTOPEP8 := autopep8
 endif
 
 all:
-	cd examples; make all
 
 clean:
 	cd examples; make clean
@@ -64,7 +43,7 @@ config:
 	git config -l
 
 docker:
-	docker run -it -v $(PWD):/usr/cs104c -w /usr/cs104c gpdowning/gcc
+	docker run -it -v $(PWD):/usr/cs104c -w /usr/cs104c gpdowning/python
 
 init:
 	touch README
@@ -103,9 +82,9 @@ status:
 
 sync:
 	@rsync -r -t -u -v --delete              \
-    --include "Hello.c++"                    \
+    --include "Hello.py"                     \
     --exclude "*"                            \
-    ../../examples/c++/ examples
+    ../../examples/python/ examples
 
 travis:
 	cd examples; make travis
@@ -120,29 +99,25 @@ versions:
 	which git
 	git --version
 	@echo
-	which $(CXX)
-	$(CXX) --version
+	which $(PYTHON)
+	$(PYTHON) --version
 	@echo
-	ls -adl $(INCLUDE)/boost
+	which $(PIP)
+	$(PIP) --version
 	@echo
-	ls -adl $(INCLUDE)/gtest
+	which $(MYPY)
+	$(MYPY) --version
 	@echo
-	ls -al $(LIBB)/libboost_serialization.a
+	which $(PYLINT)
+	$(PYLINT) --version
 	@echo
-	ls -al $(LIBG)/libgtest.a
-	ls -al $(LIBG)/libgtest_main.a
+	which $(COVERAGE)
+	$(COVERAGE) --version
 	@echo
-	which $(CLANG-CHECK)
-	$(CLANG-CHECK) --version
+	which $(PYDOC)
+	$(PYDOC) --version
 	@echo
-	which $(GCOV)
-	$(GCOV) --version
+	which $(AUTOPEP8)
+	$(AUTOPEP8) --version
 	@echo
-	which $(VALGRIND)
-	$(VALGRIND) --version
-	@echo
-	which $(DOXYGEN)
-	$(DOXYGEN) --version
-	@echo
-	which $(CLANG-FORMAT)
-	$(CLANG-FORMAT) --version
+	$(PIP) list

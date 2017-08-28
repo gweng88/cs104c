@@ -3,92 +3,63 @@
 FILES :=                    \
     Hello
 
-ifeq ($(shell uname), Darwin)                                           # Apple
-    CXX          := g++
-    INCLUDE      := /usr/local/include
-    CXXFLAGS     := -pedantic -std=c++14 -Wall -Weffc++
-    LIBB         := /usr/local/lib
-    LIBG         := /usr/local/lib
-    LDFLAGS      := -lgtest -lgtest_main
-    CLANG-CHECK  := clang-check
-    GCOV         := gcov
-    GCOVFLAGS    := -fprofile-arcs -ftest-coverage
-    VALGRIND     := valgrind
-    DOXYGEN      := doxygen
-    CLANG-FORMAT := clang-format
-else ifeq ($(CI), true)                                                 # Travis CI
-    CXX          := g++-5
-    INCLUDE      := /usr/include
-    CXXFLAGS     := -pedantic -std=c++14 -Wall -Weffc++
-    LIBB         := /usr/lib/x86_64-linux-gnu/
-    LIBG         := $(PWD)/gtest
-    LDFLAGS      := -lgtest -lgtest_main -pthread
-    CLANG-CHECK  := clang-check
-    GCOV         := gcov-5
-    GCOVFLAGS    := -fprofile-arcs -ftest-coverage
-    VALGRIND     := valgrind
-    DOXYGEN      := doxygen
-    CLANG-FORMAT := clang-format
-else ifeq ($(shell uname -p), unknown)                                  # Docker
-    CXX          := g++
-    INCLUDE      := /usr/include
-    CXXFLAGS     := -pedantic -std=c++14 -Wall -Weffc++
-    LIBB         := /usr/lib
-    LIBG         := /usr/lib
-    LDFLAGS      := -lgtest -lgtest_main -pthread
-    CLANG-CHECK  := clang-check
-    GCOV         := gcov
-    GCOVFLAGS    := -fprofile-arcs -ftest-coverage
-    VALGRIND     := valgrind
-    DOXYGEN      := doxygen
-    CLANG-FORMAT := clang-format-3.5
-else                                                                    # UTCS
-    CXX          := g++
-    INCLUDE      := /usr/include
-    CXXFLAGS     := -pedantic -std=c++14 -Wall -Weffc++
-    LIBB         := /usr/lib/x86_64-linux-gnu
-    LIBG         := /usr/local/lib
-    LDFLAGS      := -lgtest -lgtest_main -pthread
-    CLANG-CHECK  := clang-check
-    GCOV         := gcov
-    GCOVFLAGS    := -fprofile-arcs -ftest-coverage
-    VALGRIND     := valgrind
-    DOXYGEN      := doxygen
-    CLANG-FORMAT := clang-format-3.8
+ifeq ($(shell uname), Darwin)          # Apple
+    PYTHON   := python3
+    PIP      := pip
+    MYPY     := mypy
+    PYLINT   := pylint
+    COVERAGE := coverage
+    PYDOC    := pydoc
+    AUTOPEP8 := autopep8
+else ifeq ($(CI), true)                # Travis CI
+    PYTHON   := python3.5
+    PIP      := pip3.5
+    MYPY     := mypy
+    PYLINT   := pylint
+    COVERAGE := coverage-3.5
+    PYDOC    := pydoc3.5
+    AUTOPEP8 := autopep8
+else ifeq ($(shell uname -p), unknown) # Docker
+    PYTHON   := python3.5
+    PIP      := pip3.5
+    MYPY     := mypy
+    PYLINT   := pylint
+    COVERAGE := coverage-3.5
+    PYDOC    := pydoc3.5
+    AUTOPEP8 := autopep8
+else                                   # UTCS
+    PYTHON   := python3
+    PIP      := pip3
+    MYPY     := mypy
+    PYLINT   := pylint3
+    COVERAGE := coverage-3.5
+    PYDOC    := pydoc3.5
+    AUTOPEP8 := autopep8
 endif
 
-BoostSerialization: BoostSerialization.c++
-	$(CXX) $(GCOVFLAGS) $(CXXFLAGS) $< -o $@ $(LDFLAGS) -lboost_serialization
-	-$(CLANG-CHECK) -extra-arg=-std=c++11          $< --
-	-$(CLANG-CHECK) -extra-arg=-std=c++11 -analyze $< --
-	ldd $@
+.pylintrc:
+	$(PYLINT) --disable=locally-disabled --reports=no --generate-rcfile > $@
 
-%: %.c++
-	$(CXX) $(GCOVFLAGS) $(CXXFLAGS) $< -o $@ $(LDFLAGS)
-	-$(CLANG-CHECK) -extra-arg=-std=c++11          $< --
-	-$(CLANG-CHECK) -extra-arg=-std=c++11 -analyze $< --
-	ldd $@
+%.pyx: %.py .pylintrc
+	-$(MYPY)     $<
+	-$(PYLINT)   $<
+	-$(COVERAGE) run    --branch $<
+	-$(COVERAGE) report -m
 
-%.c++x: %
-	./$<
-	$(GCOV) -b $<.c++ | grep -A 5 "File '$<.c++'"
-
-all: $(FILES)
+all:
 
 clean:
-	rm -f *.bin
-	rm -f *.plist
-	rm -f $(FILES)
+	rm -f  .coverage
+	rm -f  .pylintrc
+	rm -rf .mypy_cache
 
 docker:
-	docker run -it -v $(PWD):/usr/cs371p -w /usr/cs371p gpdowning/gcc
+	docker run -it -v $(PWD):/usr/cs373 -w /usr/cs373 gpdowning/gcc
 
-run: $(FILES:=.c++x)
+run: $(FILES:=.pyx)
 
 travis:
 	make clean
-	ls -al
-	make
 	ls -al
 	make run
 
@@ -102,29 +73,25 @@ versions:
 	which git
 	git --version
 	@echo
-	which $(CXX)
-	$(CXX) --version
+	which $(PYTHON)
+	$(PYTHON) --version
 	@echo
-	ls -adl $(INCLUDE)/boost
+	which $(PIP)
+	$(PIP) --version
 	@echo
-	ls -adl $(INCLUDE)/gtest
+	which $(MYPY)
+	$(MYPY) --version
 	@echo
-	ls -al $(LIBB)/libboost_serialization.a
+	which $(PYLINT)
+	$(PYLINT) --version
 	@echo
-	ls -al $(LIBG)/libgtest.a
-	ls -al $(LIBG)/libgtest_main.a
+	which $(COVERAGE)
+	$(COVERAGE) --version
 	@echo
-	which $(CLANG-CHECK)
-	$(CLANG-CHECK) --version
+	which $(PYDOC)
+	$(PYDOC) --version
 	@echo
-	which $(GCOV)
-	$(GCOV) --version
+	which $(AUTOPEP8)
+	$(AUTOPEP8) --version
 	@echo
-	which $(VALGRIND)
-	$(VALGRIND) --version
-	@echo
-	which $(DOXYGEN)
-	$(DOXYGEN) --version
-	@echo
-	which $(CLANG-FORMAT)
-	$(CLANG-FORMAT) --version
+	$(PIP) list
