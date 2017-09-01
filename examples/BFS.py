@@ -41,6 +41,12 @@ g = {0 : {1, 2, 4},
      5 : {1, 4},
      6 : {2}}       # type: Dict[int, Set[int]]
 
+assert bfs(g, 0, 0) == [0]
+assert bfs(g, 0, 1) == [0, 1]
+assert bfs(g, 0, 2) == [0, 1, 2]
+assert bfs(g, 0, 4) == [0, 1, 2, 4]
+assert bfs(g, 0, 3) == [0, 1, 2, 4, 3]
+assert bfs(g, 0, 5) == [0, 1, 2, 4, 3, 5]
 assert bfs(g, 0, 6) == [0, 1, 2, 4, 3, 5, 6]
 assert bfs(g, 0, 7) == []
 

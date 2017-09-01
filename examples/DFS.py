@@ -74,6 +74,11 @@ g = {0 : {1, 2, 4},
      5 : {1, 4},
      6 : {2}}       # type: Dict[int, Set[int]]
 
+assert dfs(g, 0, 0) == [0]
+assert dfs(g, 0, 4) == [0, 4]
+assert dfs(g, 0, 5) == [0, 4, 5]
+assert dfs(g, 0, 3) == [0, 4, 5, 1, 3]
+assert dfs(g, 0, 2) == [0, 4, 5, 1, 3, 2]
 assert dfs(g, 0, 6) == [0, 4, 5, 1, 3, 2, 6]
 assert dfs(g, 0, 7) == []
 
