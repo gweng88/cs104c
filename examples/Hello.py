@@ -177,6 +177,12 @@ Python 3.5.2 (default, Nov 17 2016, 17:05:23)
 Type "help", "copyright", "credits" or "license" for more information.
 
 
+
+>>> import __hello__
+Hello world!
+
+
+
 >>> import this
 The Zen of Python, by Tim Peters
 
@@ -200,18 +206,16 @@ If the implementation is hard to explain, it's a bad idea.
 If the implementation is easy to explain, it may be a good idea.
 Namespaces are one honking great idea -- let's do more of those!
 
->>> quit()
-
-
-% python3
-Python 3.5.2 (default, Nov 17 2016, 17:05:23)
-[GCC 5.4.0 20160609] on linux
-Type "help", "copyright", "credits" or "license" for more information.
 
 
 >>> from __future__ import braces
   File "<stdin>", line 1
 SyntaxError: not a chance
+
+
+
+>>> from antigravity (try it!)
+
 
 
 >>> quit()

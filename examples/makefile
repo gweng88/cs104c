@@ -1,7 +1,9 @@
 .DEFAULT_GOAL := all
 
 FILES :=                    \
-    Hello
+    Hello                   \
+    DFS                     \
+    BFS
 
 ifeq ($(shell uname), Darwin)          # Apple
     PYTHON   := python3
