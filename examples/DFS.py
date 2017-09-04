@@ -2,100 +2,74 @@
 
 # pylint: disable = bad-whitespace
 # pylint: disable = invalid-name
-# pylint: disable = missing-docstring
-# pylint: disable = pointless-string-statement
-# pylint: disable = redefined-outer-name
 # pylint: disable = unused-import
 
 # ------
 # DFS.py
 # ------
 
-# https://en.wikipedia.org/wiki/Depth-first_search
+"""
+https://en.wikipedia.org/wiki/Depth-first_search
+"""
 
 from collections import deque
-from typing      import Dict, List, Set
+from typing      import Dict, List
 
-def dfs (g: Dict[int, Set[int]], u: int, v: int) -> List[int] :
-    s = set()               # type: Set[int]
-    q = deque([u])
-    p = []                  # type: List[int]
+def dfs (g: Dict[int, List[int]], s: int, t: int) -> List[int] :
+    """
+    depth-first search
+    g: adjacency list
+    s: start vertex
+    t: end   vertex
+    returns path
+    """
+    b    = [False] * len(g) # type: List[bool]
+    b[s] = True
+    q    = deque([s])       # stack
+    p    = []               # type: List[int]
     while q :
-        t = q.pop()
-        p.append(t)         # add to the path
-        if t == v :         # check the goal
+        u = q.pop()         # pop stack
+        p.append(u)         # add to the path
+        if u == t :         # check the end
             return p
-        s.add(t)            # mark visited
-        for w in g[t] :
-            if w not in s : # check visited BEFORE PUSH
-                q.append(w)
+        for v in g[u] :
+            if not b[v] :   # check visited BEFORE PUSH
+                b[v] = True # mark visited
+                q.append(v) # push stack
     return []
 
-def dfs2 (g: Dict[int, Set[int]], u: int, v: int) -> List[int] :
-    s = set()               # type: Set[int]
-    q = deque([u])
-    p = []                  # type: List[int]
-    while q :
-        t = q.pop()
-#       if t not in s :
-        p.append(t)         # add to the path
-        if t == v :         # check the goal
-            return p
-        if t not in s :     # check visited AFTER POP
-            s.add(t)        # mark visited
-            for w in g[t] :
-                q.append(w)
-    return []
+def test () :
+    """
+    Algorithm Design by Kleinberg and Tardos
+    page 79
+    undirected
+    four connected components
+    """
+    g = {0  : [],
+         1  : [2, 3],
+         2  : [1, 3, 4, 5],
+         3  : [1, 2, 5, 7, 8],
+         4  : [2, 5],
+         5  : [2, 3, 4, 6],
+         6  : [5],
+         7  : [3, 8],
+         8  : [3, 7],
+         9  : [10],
+         10 : [9],
+         11 : [12],
+         12 : [11, 13],
+         13 : [12]}             # type: Dict[int, List[int]]
 
-def dfs3 (g: Dict[int, Set[int]], u: int, v: int) -> List[int] :
-    s = set()               # type: Set[int]
-    s.add(u)
-    q = deque([u])
-    p = []                  # type: List[int]
-    while q :
-        t = q.pop()
-        p.append(t)         # add to the path
-        if t == v :         # check the goal
-            return p
-        for w in g[t] :
-            if w not in s : # check visited BEFORE PUSH
-                s.add(w)    # mark visited
-                q.append(w)
-    return []
+    assert dfs(g, 1,  1) == [1]
+    assert dfs(g, 1,  3) == [1, 3]
+    assert dfs(g, 1,  8) == [1, 3, 8]
+    assert dfs(g, 1,  7) == [1, 3, 8, 7]
+    assert dfs(g, 1,  5) == [1, 3, 8, 7, 5]
+    assert dfs(g, 1,  6) == [1, 3, 8, 7, 5, 6]
+    assert dfs(g, 1,  9) == []
+    assert dfs(g, 1, 11) == []
 
-print("DFS.py")
-
-# undirected graph
-g = {0 : {1, 2, 4},
-     1 : {0, 3, 5},
-     2 : {0, 6},
-     3 : {1},
-     4 : {0, 5},
-     5 : {1, 4},
-     6 : {2}}       # type: Dict[int, Set[int]]
-
-assert dfs(g, 0, 0) == [0]
-assert dfs(g, 0, 4) == [0, 4]
-assert dfs(g, 0, 5) == [0, 4, 5]
-assert dfs(g, 0, 3) == [0, 4, 5, 1, 3]
-assert dfs(g, 0, 2) == [0, 4, 5, 1, 3, 2]
-assert dfs(g, 0, 6) == [0, 4, 5, 1, 3, 2, 6]
-assert dfs(g, 0, 7) == []
-
-print(dfs2(g, 0, 6))
-print(dfs2(g, 0, 7))
-
-print(dfs3(g, 0, 6))
-print(dfs2(g, 0, 7))
-
-print("Done.")
-
-""" #pragma: no cover
-% DFS.py
-DFS.py
-[0, 4, 5, 4, 1, 5, 3, 1, 0, 0, 2, 6]
-[]
-[0, 4, 5, 2, 6]
-[]
-Done.
-"""
+if __name__ == "__main__" : #pragma: no cover
+    print("DFS.py")
+    test()
+    print("Done.")
