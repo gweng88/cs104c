@@ -24,28 +24,6 @@ def dfs1 (g: Dict[int, List[int]], s: int, t: int) -> List[int] :
     returns path
     """
     b    = [False] * len(g) # type: List[bool]
-    q    = deque([s])       # stack
-    p    = []               # type: List[int]
-    while q :
-        u = q.pop()         # pop stack
-        if not b[u] :       # check visited AFTER POP
-            p.append(u)     # add to the path
-            if u == t :     # check the end
-                return p
-            b[u] = True     # mark visited
-            for v in g[u] :
-                q.append(v) # push stack
-    return []
-
-def dfs2 (g: Dict[int, List[int]], s: int, t: int) -> List[int] :
-    """
-    depth-first search
-    g: adjacency list
-    s: start vertex
-    t: end   vertex
-    returns path
-    """
-    b    = [False] * len(g) # type: List[bool]
     b[s] = True
     q    = deque([s])       # stack
     p    = []               # type: List[int]
@@ -57,6 +35,28 @@ def dfs2 (g: Dict[int, List[int]], s: int, t: int) -> List[int] :
         for v in g[u] :
             if not b[v] :   # check visited BEFORE PUSH
                 b[v] = True # mark visited
+                q.append(v) # push stack
+    return []
+
+def dfs2 (g: Dict[int, List[int]], s: int, t: int) -> List[int] :
+    """
+    depth-first search
+    g: adjacency list
+    s: start vertex
+    t: end   vertex
+    returns path
+    """
+    b = [False] * len(g)    # type: List[bool]
+    q = deque([s])          # stack
+    p = []                  # type: List[int]
+    while q :
+        u = q.pop()         # pop stack
+        if not b[u] :       # check visited AFTER POP
+            p.append(u)     # add to the path
+            if u == t :     # check the end
+                return p
+            b[u] = True     # mark visited
+            for v in g[u] :
                 q.append(v) # push stack
     return []
 
