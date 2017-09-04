@@ -82,7 +82,6 @@ status:
 
 sync:
 	@rsync -r -t -u -v --delete              \
-    --include "Hello.py"                     \
     --include "DFS.py"                       \
     --include "BFS.py"                       \
     --exclude "*"                            \

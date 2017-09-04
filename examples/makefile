@@ -1,7 +1,6 @@
 .DEFAULT_GOAL := all
 
 FILES :=                    \
-    Hello                   \
     DFS                     \
     BFS
 
