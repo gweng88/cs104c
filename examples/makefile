@@ -55,7 +55,7 @@ clean:
 	rm -rf .mypy_cache
 
 docker:
-	docker run -it -v $(PWD):/usr/cs373 -w /usr/cs373 gpdowning/gcc
+	docker run -it -v $(PWD):/usr/cs104c -w /usr/cs104c gpdowning/gcc
 
 run: $(FILES:=.pyx)
 
