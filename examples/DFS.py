@@ -15,7 +15,29 @@ https://en.wikipedia.org/wiki/Depth-first_search
 from collections import deque
 from typing      import Dict, List
 
-def dfs (g: Dict[int, List[int]], s: int, t: int) -> List[int] :
+def dfs1 (g: Dict[int, List[int]], s: int, t: int) -> List[int] :
+    """
+    depth-first search
+    g: adjacency list
+    s: start vertex
+    t: end   vertex
+    returns path
+    """
+    b    = [False] * len(g) # type: List[bool]
+    q    = deque([s])       # stack
+    p    = []               # type: List[int]
+    while q :
+        u = q.pop()         # pop stack
+        if not b[u] :       # check visited AFTER POP
+            p.append(u)     # add to the path
+            if u == t :     # check the end
+                return p
+            b[u] = True     # mark visited
+            for v in g[u] :
+                q.append(v) # push stack
+    return []
+
+def dfs2 (g: Dict[int, List[int]], s: int, t: int) -> List[int] :
     """
     depth-first search
     g: adjacency list
@@ -38,7 +60,7 @@ def dfs (g: Dict[int, List[int]], s: int, t: int) -> List[int] :
                 q.append(v) # push stack
     return []
 
-def test () :
+def test (dfs) :
     """
     Algorithm Design by Kleinberg and Tardos
     page 79
@@ -71,5 +93,6 @@ def test () :
 
 if __name__ == "__main__" : #pragma: no cover
     print("DFS.py")
-    test()
+    test(dfs1)
+    test(dfs2)
     print("Done.")

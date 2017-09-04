@@ -15,7 +15,29 @@ https://en.wikipedia.org/wiki/Breadth-first_search
 from collections import deque
 from typing      import Dict, List
 
-def bfs (g: Dict[int, List[int]], s: int, t: int) -> List[int] :
+def bfs1 (g: Dict[int, List[int]], s: int, t: int) -> List[int] :
+    """
+    breadth-first search
+    g: adjacency list
+    s: start vertex
+    t: end   vertex
+    returns path
+    """
+    b    = [False] * len(g) # type: List[bool]
+    q    = deque([s])       # queue
+    p    = []               # type: List[int]
+    while q :
+        u = q.popleft()     # pop queue
+        if not b[u] :       # check visited AFTER POP
+            p.append(u)     # add to the path
+            if u == t :     # check the end
+                return p
+            b[u] = True     # mark visited
+            for v in g[u] :
+                q.append(v) # push queue
+    return []
+
+def bfs2 (g: Dict[int, List[int]], s: int, t: int) -> List[int] :
     """
     breadth-first search
     g: adjacency list
@@ -38,7 +60,7 @@ def bfs (g: Dict[int, List[int]], s: int, t: int) -> List[int] :
                 q.append(v) # push queue
     return []
 
-def test () :
+def test (bfs) :
     """
     Algorithm Design by Kleinberg and Tardos
     page 79
@@ -72,5 +94,6 @@ def test () :
 
 if __name__ == "__main__" : #pragma: no cover
     print("BFS.py")
-    test()
+    test(bfs1)
+    test(bfs2)
     print("Done.")
