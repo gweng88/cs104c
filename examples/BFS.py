@@ -86,21 +86,24 @@ def test (bfs) :
          10 : [9],
          11 : [12],
          12 : [11, 13],
-         13 : [12]}             # type: Dict[int, List[int]]
+         13 : [12]}                  # type: Dict[int, List[int]]
 
+    assert bfs(g, 1,  1) == [1]
     assert bfs(g, 1,  2) == [1, 2]
     assert bfs(g, 1,  3) == [1, 2, 3]
     assert bfs(g, 1,  4) == [1, 2, 3, 4]
     assert bfs(g, 1,  5) == [1, 2, 3, 4, 5]
+    assert bfs(g, 1,  6) == [1, 2, 3, 4, 5, 7, 8, 6]
     assert bfs(g, 1,  7) == [1, 2, 3, 4, 5, 7]
     assert bfs(g, 1,  8) == [1, 2, 3, 4, 5, 7, 8]
-    assert bfs(g, 1,  6) == [1, 2, 3, 4, 5, 7, 8, 6]
     assert bfs(g, 1,  9) == []
+    assert bfs(g, 1, 10) == []
     assert bfs(g, 1, 11) == []
+    assert bfs(g, 1, 12) == []
+    assert bfs(g, 1, 13) == []
 
 if __name__ == "__main__" : #pragma: no cover
     print("BFS.py")
     test(bfs1)
-    print()
     test(bfs2)
     print("Done.")

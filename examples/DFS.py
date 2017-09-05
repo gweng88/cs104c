@@ -86,16 +86,21 @@ def test (dfs) :
          10 : [9],
          11 : [12],
          12 : [11, 13],
-         13 : [12]}             # type: Dict[int, List[int]]
+         13 : [12]}                  # type: Dict[int, List[int]]
 
     assert dfs(g, 1,  1) == [1]
+    assert dfs(g, 1,  2) == [1, 3, 8, 7, 5, 6, 4, 2]
     assert dfs(g, 1,  3) == [1, 3]
-    assert dfs(g, 1,  8) == [1, 3, 8]
-    assert dfs(g, 1,  7) == [1, 3, 8, 7]
+    assert dfs(g, 1,  4) == [1, 3, 8, 7, 5, 6, 4]
     assert dfs(g, 1,  5) == [1, 3, 8, 7, 5]
     assert dfs(g, 1,  6) == [1, 3, 8, 7, 5, 6]
+    assert dfs(g, 1,  7) == [1, 3, 8, 7]
+    assert dfs(g, 1,  8) == [1, 3, 8]
     assert dfs(g, 1,  9) == []
+    assert dfs(g, 1, 10) == []
     assert dfs(g, 1, 11) == []
+    assert dfs(g, 1, 12) == []
+    assert dfs(g, 1, 13) == []
 
 if __name__ == "__main__" : #pragma: no cover
     print("DFS.py")
