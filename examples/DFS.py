@@ -19,7 +19,7 @@ def dfs1 (g: Dict[int, List[int]], s: int, t: int) -> List[int] :
     """
     depth-first search
     this implementation does have DUPLICATES in the stack
-    the commented-out assertion will fail
+    the commented-out assertion would fail
     g: adjacency list
     s: start vertex
     t: end   vertex

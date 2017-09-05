@@ -45,7 +45,7 @@ def bfs2 (g: Dict[int, List[int]], s: int, t: int) -> List[int] :
     breadth-first search
     this implementation is still correct, BUT is inefficient
     this implementation does have DUPLICATES in the queue
-    the commented-out assertion will fail
+    the commented-out assertion would fail
     g: adjacency list
     s: start vertex
     t: end   vertex
