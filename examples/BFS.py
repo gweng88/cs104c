@@ -18,6 +18,7 @@ from typing      import Dict, List
 def bfs1 (g: Dict[int, List[int]], s: int, t: int) -> List[int] :
     """
     breadth-first search
+    this implementation does NOT have DUPLICATES in the queue
     g: adjacency list
     s: start vertex
     t: end   vertex
@@ -28,7 +29,7 @@ def bfs1 (g: Dict[int, List[int]], s: int, t: int) -> List[int] :
     q    = deque([s])                # queue
     p    = []                        # type: List[int]
     while q :
-        assert len(q) == len(set(q)) # check for duplicates
+        assert len(q) == len(set(q)) # NO DUPLICATES
         u = q.popleft()              # pop queue
         p.append(u)                  # add to the path
         if u == t :                  # check the end
@@ -43,8 +44,8 @@ def bfs2 (g: Dict[int, List[int]], s: int, t: int) -> List[int] :
     """
     breadth-first search
     this implementation is still correct, BUT is inefficient
-    duplicate elements are pushed onto the queue
-    and the commented-out assertion will fail
+    this implementation does have DUPLICATES in the queue
+    the commented-out assertion will fail
     g: adjacency list
     s: start vertex
     t: end   vertex
@@ -54,7 +55,7 @@ def bfs2 (g: Dict[int, List[int]], s: int, t: int) -> List[int] :
     q = deque([s])                   # queue
     p = []                           # type: List[int]
     while q :
-#       assert len(q) == len(set(q)) # check for duplicates
+#       assert len(q) == len(set(q)) # DUPLICATES
         u = q.popleft()              # pop queue
         if not b[u] :                # check visited AFTER POP
             p.append(u)              # add to the path

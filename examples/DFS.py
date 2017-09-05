@@ -18,46 +18,52 @@ from typing      import Dict, List
 def dfs1 (g: Dict[int, List[int]], s: int, t: int) -> List[int] :
     """
     depth-first search
+    this implementation does have DUPLICATES in the stack
+    the commented-out assertion will fail
     g: adjacency list
     s: start vertex
     t: end   vertex
     returns path
     """
-    b    = [False] * len(g) # type: List[bool]
-    b[s] = True
-    q    = deque([s])       # stack
-    p    = []               # type: List[int]
+    b = [False] * len(g)             # type: List[bool]
+    q = deque([s])                   # stack
+    p = []                           # type: List[int]
     while q :
-        u = q.pop()         # pop stack
-        p.append(u)         # add to the path
-        if u == t :         # check the end
-            return p
-        for v in g[u] :
-            if not b[v] :   # check visited BEFORE PUSH
-                b[v] = True # mark visited
-                q.append(v) # push stack
+#       assert len(q) == len(set(q)) # DUPLICATES
+        u = q.pop()                  # pop stack
+        if not b[u] :                # check visited AFTER POP
+            p.append(u)              # add to the path
+            if u == t :              # check the end
+                return p
+            b[u] = True              # mark visited
+            for v in g[u] :
+                q.append(v)          # push stack
     return []
 
 def dfs2 (g: Dict[int, List[int]], s: int, t: int) -> List[int] :
     """
     depth-first search
+    this implementation does NOT have DUPLICATES in the stack, but is incorrect
+    it does NOT visit the vertices in the correct order
     g: adjacency list
     s: start vertex
     t: end   vertex
     returns path
     """
-    b = [False] * len(g)    # type: List[bool]
-    q = deque([s])          # stack
-    p = []                  # type: List[int]
+    b    = [False] * len(g)          # type: List[bool]
+    b[s] = True
+    q    = deque([s])                # stack
+    p    = []                        # type: List[int]
     while q :
-        u = q.pop()         # pop stack
-        if not b[u] :       # check visited AFTER POP
-            p.append(u)     # add to the path
-            if u == t :     # check the end
-                return p
-            b[u] = True     # mark visited
-            for v in g[u] :
-                q.append(v) # push stack
+        assert len(q) == len(set(q)) # NO DUPLICATES
+        u = q.pop()                  # pop stack
+        p.append(u)                  # add to the path
+        if u == t :                  # check the end
+            return p
+        for v in g[u] :
+            if not b[v] :            # check visited BEFORE PUSH
+                b[v] = True          # mark visited
+                q.append(v)          # push stack
     return []
 
 def test (dfs) :
