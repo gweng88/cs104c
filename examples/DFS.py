@@ -88,6 +88,7 @@ def test (dfs) :
          12 : [11, 13],
          13 : [12]}                  # type: Dict[int, List[int]]
 
+    assert dfs(g, 1,  0) == []
     assert dfs(g, 1,  1) == [1]
     assert dfs(g, 1,  2) == [1, 3, 8, 7, 5, 6, 4, 2]
     assert dfs(g, 1,  3) == [1, 3]

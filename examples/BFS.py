@@ -88,6 +88,7 @@ def test (bfs) :
          12 : [11, 13],
          13 : [12]}                  # type: Dict[int, List[int]]
 
+    assert bfs(g, 1,  0) == []
     assert bfs(g, 1,  1) == [1]
     assert bfs(g, 1,  2) == [1, 2]
     assert bfs(g, 1,  3) == [1, 2, 3]
