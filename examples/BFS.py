@@ -21,43 +21,48 @@ def bfs1 (g: Dict[int, List[int]], s: int, t: int) -> List[int] :
     g: adjacency list
     s: start vertex
     t: end   vertex
-    returns path
+    returns search path
     """
-    b    = [False] * len(g) # type: List[bool]
+    b    = [False] * len(g)          # type: List[bool]
     b[s] = True
-    q    = deque([s])       # queue
-    p    = []               # type: List[int]
+    q    = deque([s])                # queue
+    p    = []                        # type: List[int]
     while q :
-        u = q.popleft()     # pop queue
-        p.append(u)         # add to the path
-        if u == t :         # check the end
+        assert len(q) == len(set(q)) # check for duplicates
+        u = q.popleft()              # pop queue
+        p.append(u)                  # add to the path
+        if u == t :                  # check the end
             return p
         for v in g[u] :
-            if not b[v] :   # check visited BEFORE PUSH
-                b[v] = True # mark visited
-                q.append(v) # push queue
+            if not b[v] :            # check visited BEFORE PUSH
+                b[v] = True          # mark visited
+                q.append(v)          # push queue
     return []
 
 def bfs2 (g: Dict[int, List[int]], s: int, t: int) -> List[int] :
     """
     breadth-first search
+    this implementation is still correct, BUT is inefficient
+    duplicate elements are pushed onto the queue
+    and the commented-out assertion will fail
     g: adjacency list
     s: start vertex
     t: end   vertex
-    returns path
+    returns search path
     """
-    b = [False] * len(g)    # type: List[bool]
-    q = deque([s])          # queue
-    p = []                  # type: List[int]
+    b = [False] * len(g)             # type: List[bool]
+    q = deque([s])                   # queue
+    p = []                           # type: List[int]
     while q :
-        u = q.popleft()     # pop queue
-        if not b[u] :       # check visited AFTER POP
-            p.append(u)     # add to the path
-            if u == t :     # check the end
+#       assert len(q) == len(set(q)) # check for duplicates
+        u = q.popleft()              # pop queue
+        if not b[u] :                # check visited AFTER POP
+            p.append(u)              # add to the path
+            if u == t :              # check the end
                 return p
-            b[u] = True     # mark visited
+            b[u] = True              # mark visited
             for v in g[u] :
-                q.append(v) # push queue
+                q.append(v)          # push queue
     return []
 
 def test (bfs) :
@@ -95,5 +100,6 @@ def test (bfs) :
 if __name__ == "__main__" : #pragma: no cover
     print("BFS.py")
     test(bfs1)
+    print()
     test(bfs2)
     print("Done.")
