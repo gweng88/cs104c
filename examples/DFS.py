@@ -66,7 +66,7 @@ def dfs2 (g: Dict[int, List[int]], s: int, t: int) -> List[int] :
                 q.append(v)          # push stack
     return []
 
-def test (dfs) :
+def test () :
     """
     Algorithm Design by Kleinberg and Tardos
     page 79
@@ -74,37 +74,63 @@ def test (dfs) :
     four connected components
     """
     g = {0  : [],
-         1  : [2, 3],
-         2  : [1, 3, 4, 5],
-         3  : [1, 2, 5, 7, 8],
-         4  : [2, 5],
-         5  : [2, 3, 4, 6],
-         6  : [5],
-         7  : [3, 8],
-         8  : [3, 7],
-         9  : [10],
-         10 : [9],
-         11 : [12],
-         12 : [11, 13],
+         1  : [ 3,  2],
+         2  : [ 5,  4,  3,  1],
+         3  : [ 8,  7,  5,  2,  1],
+         4  : [ 5,  2],
+         5  : [ 6,  4,  3,  2],
+         6  : [ 5],
+         7  : [ 8,  3],
+         8  : [ 7,  3],
+         9  : [11, 10],
+         10 : [12,  9],
+         11 : [12,  9],
+         12 : [13, 11, 10],
          13 : [12]}                  # type: Dict[int, List[int]]
 
-    assert dfs(g, 1,  0) == []
-    assert dfs(g, 1,  1) == [1]
-    assert dfs(g, 1,  2) == [1, 3, 8, 7, 5, 6, 4, 2]
-    assert dfs(g, 1,  3) == [1, 3]
-    assert dfs(g, 1,  4) == [1, 3, 8, 7, 5, 6, 4]
-    assert dfs(g, 1,  5) == [1, 3, 8, 7, 5]
-    assert dfs(g, 1,  6) == [1, 3, 8, 7, 5, 6]
-    assert dfs(g, 1,  7) == [1, 3, 8, 7]
-    assert dfs(g, 1,  8) == [1, 3, 8]
-    assert dfs(g, 1,  9) == []
-    assert dfs(g, 1, 10) == []
-    assert dfs(g, 1, 11) == []
-    assert dfs(g, 1, 12) == []
-    assert dfs(g, 1, 13) == []
+    assert dfs1(g, 1,  0) == []
+    assert dfs2(g, 1,  0) == []
+
+    assert dfs1(g, 1,  1) == [1]
+    assert dfs2(g, 1,  1) == [1]
+
+    assert dfs1(g, 1,  2) == [1, 2]
+    assert dfs2(g, 1,  2) == [1, 2]
+
+    assert dfs1(g, 1,  3) == [1, 2, 3]
+    assert dfs2(g, 1,  3) == [1, 2, 4, 5, 6, 3]
+
+    assert dfs1(g, 1,  4) == [1, 2, 3, 5, 4]
+    assert dfs2(g, 1,  4) == [1, 2, 4]
+
+    assert dfs1(g, 1,  5) == [1, 2, 3, 5]
+    assert dfs2(g, 1,  5) == [1, 2, 4, 5]
+
+    assert dfs1(g, 1,  6) == [1, 2, 3, 5, 4, 6]
+    assert dfs2(g, 1,  6) == [1, 2, 4, 5, 6]
+
+    assert dfs1(g, 1,  7) == [1, 2, 3, 5, 4, 6, 7]
+    assert dfs2(g, 1,  7) == [1, 2, 4, 5, 6, 3, 7]
+
+    assert dfs1(g, 1,  8) == [1, 2, 3, 5, 4, 6, 7, 8]
+    assert dfs2(g, 1,  8) == [1, 2, 4, 5, 6, 3, 7, 8]
+
+    assert dfs1(g, 1,  9) == []
+    assert dfs2(g, 1,  9) == []
+
+    assert dfs1(g, 1, 10) == []
+    assert dfs2(g, 1, 10) == []
+
+    assert dfs1(g, 1, 11) == []
+    assert dfs2(g, 1, 11) == []
+
+    assert dfs1(g, 1, 12) == []
+    assert dfs2(g, 1, 12) == []
+
+    assert dfs1(g, 1, 13) == []
+    assert dfs2(g, 1, 13) == []
 
 if __name__ == "__main__" : #pragma: no cover
     print("DFS.py")
-    test(dfs1)
-    test(dfs2)
+    test()
     print("Done.")
