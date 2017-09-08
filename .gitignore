@@ -1,3 +1,15 @@
+# General Files
 .DS_Store
 CS104c.bbprojectd
 Icon?
+
+# Grading scripts
+grader.py
+scraper.py
+
+# Private student info
+codeforces_logs/
+students.csv
+
+# Student submissions
+week*/submissions
