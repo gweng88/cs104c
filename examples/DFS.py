@@ -13,9 +13,9 @@ https://en.wikipedia.org/wiki/Depth-first_search
 """
 
 from collections import deque
-from typing      import Dict, List
+from typing      import List
 
-def dfs1 (g: Dict[int, List[int]], s: int, t: int) -> List[int] :
+def dfs1 (g: List[List[int]], s: int, t: int) -> List[int] :
     """
     depth-first search
     this implementation does have DUPLICATES in the stack
@@ -40,7 +40,7 @@ def dfs1 (g: Dict[int, List[int]], s: int, t: int) -> List[int] :
                 q.append(v)          # push stack
     return []
 
-def dfs2 (g: Dict[int, List[int]], s: int, t: int) -> List[int] :
+def dfs2 (g: List[List[int]], s: int, t: int) -> List[int] :
     """
     depth-first search
     this implementation does NOT have DUPLICATES in the stack, but is incorrect
@@ -73,20 +73,20 @@ def test () :
     undirected
     four connected components
     """
-    g = {0  : [],
-         1  : [ 3,  2],
-         2  : [ 5,  4,  3,  1],
-         3  : [ 8,  7,  5,  2,  1],
-         4  : [ 5,  2],
-         5  : [ 6,  4,  3,  2],
-         6  : [ 5],
-         7  : [ 8,  3],
-         8  : [ 7,  3],
-         9  : [11, 10],
-         10 : [12,  9],
-         11 : [12,  9],
-         12 : [13, 11, 10],
-         13 : [12]}                  # type: Dict[int, List[int]]
+    g = [[],                         #  0
+         [ 3,  2],                   #  1
+         [ 5,  4,  3,  1],           #  2
+         [ 8,  7,  5,  2,  1],       #  3
+         [ 5,  2],                   #  4
+         [ 6,  4,  3,  2],           #  5
+         [ 5],                       #  6
+         [ 8,  3],                   #  7
+         [ 7,  3],                   #  8
+         [11, 10],                   #  9
+         [12,  9],                   # 10
+         [12,  9],                   # 11
+         [13, 11, 10],               # 12
+         [12]]                       # type: List[List[int]]
 
     assert dfs1(g, 1,  0) == []
     assert dfs2(g, 1,  0) == []
