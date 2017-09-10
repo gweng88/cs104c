@@ -71,7 +71,7 @@ def test (bfs) :
     Algorithm Design by Kleinberg and Tardos
     page 79
     undirected
-    four connected components
+    three connected components
     """
     g = [[],                         #  0
          [ 3,  2],                   #  1

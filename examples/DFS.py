@@ -71,7 +71,7 @@ def test (dfs) :
     Algorithm Design by Kleinberg and Tardos
     page 79
     undirected
-    four connected components
+    three connected components
     """
     g = [[],                         #  0
          [ 2,  3],                   #  1
