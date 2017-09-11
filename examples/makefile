@@ -65,10 +65,12 @@ docker:
 
 run: $(FILES:=.pyx)
 
+test: $(FILES:=.pyy)
+
 travis:
 	make clean
 	ls -al
-	make run
+	make test
 
 versions:
 	which cmake

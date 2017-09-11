@@ -6,6 +6,7 @@ python:
    - "3.5"
 
 before_install:
+    - cat .travis.yml
     - pip install --upgrade pip
 
 install:
@@ -16,10 +17,11 @@ install:
     - pip install pylint
 
 before_script:
+    - date
     - uname -a
     - printenv | sort
-    - make versions
 
 script:
-    - date
+    - cat makefile
+    - make versions
     - make travis
