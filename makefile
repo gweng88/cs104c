@@ -81,10 +81,11 @@ status:
 	git status
 
 sync:
-	@rsync -r -t -u -v --delete              \
-    --include "DFS.py"                       \
-    --include "BFS.py"                       \
-    --exclude "*"                            \
+	@rsync -r -t -u -v --delete \
+    --include "DFS.py"          \
+    --include "BFS.py"          \
+    --include "GCD.py"          \
+    --exclude "*"               \
     ../../examples/python/ examples
 
 travis:

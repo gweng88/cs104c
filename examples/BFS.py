@@ -13,7 +13,7 @@ https://en.wikipedia.org/wiki/Breadth-first_search
 """
 
 from collections import deque
-from typing      import List
+from typing      import Callable, List
 
 def bfs1 (g: List[List[int]], s: int, t: int) -> List[int] :
     """
@@ -66,8 +66,9 @@ def bfs2 (g: List[List[int]], s: int, t: int) -> List[int] :
                 q.append(v)          # push queue
     return []
 
-def test (bfs) :
+def test (bfs: Callable[[List[List[int]], int,int], List[int]]) -> None :
     """
+    testing breadth-first search
     Algorithm Design by Kleinberg and Tardos
     page 79
     undirected

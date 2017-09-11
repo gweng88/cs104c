@@ -1,8 +1,9 @@
 .DEFAULT_GOAL := all
 
-FILES :=                    \
-    DFS                     \
-    BFS
+FILES := \
+    DFS  \
+    BFS  \
+    GCD
 
 ifeq ($(shell uname), Darwin)          # Apple
     PYTHON   := python3
@@ -41,13 +42,18 @@ endif
 .pylintrc:
 	$(PYLINT) --disable=locally-disabled --reports=no --generate-rcfile > $@
 
-%.pyx: %.py .pylintrc
-	-$(MYPY)     $<
-	-$(PYLINT)   $<
-	-$(COVERAGE) run    --branch $<
+%: %.py .pylintrc
+	-$(MYPY)   $<
+	-$(PYLINT) $<
+
+%.pyx: %
+	$(PYTHON) $<.py
+
+%.pyy: %
+	-$(COVERAGE) run    --branch $<.py
 	-$(COVERAGE) report -m
 
-all:
+all: $(FILES)
 
 clean:
 	rm -f  .coverage

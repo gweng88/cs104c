@@ -13,7 +13,7 @@ https://en.wikipedia.org/wiki/Depth-first_search
 """
 
 from collections import deque
-from typing      import List
+from typing      import Callable, List
 
 def dfs1 (g: List[List[int]], s: int, t: int) -> List[int] :
     """
@@ -66,8 +66,9 @@ def dfs2 (g: List[List[int]], s: int, t: int) -> List[int] :
                 q.append(v)          # push stack
     return []
 
-def test (dfs) :
+def test (dfs: Callable[[List[List[int]], int,int], List[int]]) -> None :
     """
+    testing depth-first search
     Algorithm Design by Kleinberg and Tardos
     page 79
     undirected
