@@ -42,7 +42,6 @@ endif
 .pylintrc:
 	$(PYLINT) --disable=locally-disabled --reports=no --generate-rcfile > $@
 
-.PHONY:
 %: %.py .pylintrc
 	-$(MYPY)   $<
 	-$(PYLINT) $<
@@ -70,6 +69,8 @@ test: $(FILES:=.pyy)
 
 travis:
 	make clean
+	ls -al
+	make
 	ls -al
 	make test
 
