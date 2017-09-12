@@ -42,15 +42,16 @@ endif
 .pylintrc:
 	$(PYLINT) --disable=locally-disabled --reports=no --generate-rcfile > $@
 
-%.ck: %.py .pylintrc
+.PHONY:
+%: %.py .pylintrc
 	-$(MYPY)   $<
 	-$(PYLINT) $<
 
-%.pyx: %.ck
-	$(PYTHON) $(<:.ck=.py)
+%.pyx: %
+	$(PYTHON) $<.py
 
-%.pyy: %.ck
-	-$(COVERAGE) run    --branch $(<:.ck=.py)
+%.pyy: %
+	-$(COVERAGE) run    --branch $<.py
 	-$(COVERAGE) report -m
 
 all: $(FILES)
@@ -70,9 +71,6 @@ test: $(FILES:=.pyy)
 travis:
 	make clean
 	ls -al
-	make BFS.ck
-	make BFS.pyx
-	make BFS.pyy
 	make test
 
 versions:
