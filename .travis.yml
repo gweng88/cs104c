@@ -15,7 +15,6 @@ install:
     - pip install coverage
     - pip install mypy
     - pip install numpy
-    - pip install pydoc
     - pip install pylint
 
 before_script:
