@@ -42,18 +42,13 @@ endif
 .pylintrc:
 	$(PYLINT) --disable=locally-disabled --reports=no --generate-rcfile > $@
 
-%.pyt: %.py .pylintrc
-	-$(MYPY)   $<
-	-$(PYLINT) $<
-
-%.pyx: %.pyt
-	$(PYTHON) $(<:.pyt=.py)
-
-%.pyy: %.pyt
-	-$(COVERAGE) run    --branch $(<:.pyt=.py)
+%.pyx: %.py .pylintrc
+	-$(MYPY)     $<
+	-$(PYLINT)   $<
+	-$(COVERAGE) run    --branch $<
 	-$(COVERAGE) report -m
 
-all: $(FILES:=.pyt)
+all:
 
 clean:
 	rm -f  .coverage
@@ -65,14 +60,10 @@ docker:
 
 run: $(FILES:=.pyx)
 
-test: $(FILES:=.pyy)
-
 travis:
 	make clean
 	ls -al
-	make test
-	ls -al /home/travis/virtualenv/python3.5.3/bin/
-	ls -al /opt/python/3.5.3/bin/
+	make run
 
 versions:
 	which cmake
