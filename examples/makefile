@@ -42,15 +42,15 @@ endif
 .pylintrc:
 	$(PYLINT) --disable=locally-disabled --reports=no --generate-rcfile > $@
 
-%: %.py .pylintrc
+%.ck: %.py .pylintrc
 	-$(MYPY)   $<
 	-$(PYLINT) $<
 
-%.pyx: %
-	$(PYTHON) $<.py
+%.pyx: %.ck
+	$(PYTHON) $(<:.ck=.py)
 
-%.pyy: %
-	-$(COVERAGE) run    --branch $<.py
+%.pyy: %.ck
+	-$(COVERAGE) run    --branch $(<:.ck=.py)
 	-$(COVERAGE) report -m
 
 all: $(FILES)
@@ -69,8 +69,6 @@ test: $(FILES:=.pyy)
 
 travis:
 	make clean
-	ls -al
-	make
 	ls -al
 	make test
 
