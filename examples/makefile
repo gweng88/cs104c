@@ -70,6 +70,8 @@ test: $(FILES:=.pyy)
 travis:
 	make clean
 	ls -al
+	make
+	ls -al
 	make test
 
 versions:
