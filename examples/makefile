@@ -42,18 +42,18 @@ endif
 .pylintrc:
 	$(PYLINT) --disable=locally-disabled --reports=no --generate-rcfile > $@
 
-%.ck: %.py .pylintrc
+%.pyx: %.py .pylintrc
 	-$(MYPY)   $<
 	-$(PYLINT) $<
 
-%.pyx: %.ck
-	$(PYTHON) $(<:.ck=.py)
+%.pyy: %.pyx
+	$(PYTHON) $(<:.pyx=.py)
 
-%.pyy: %.ck
-	-$(COVERAGE) run    --branch $(<:.ck=.py)
+%.pyz: %.pyx
+	-$(COVERAGE) run    --branch $(<:.pyx=.py)
 	-$(COVERAGE) report -m
 
-all: $(FILES)
+all: $(FILES:=.pyx)
 
 clean:
 	rm -f  .coverage
@@ -63,14 +63,12 @@ clean:
 docker:
 	docker run -it -v $(PWD):/usr/cs104c -w /usr/cs104c gpdowning/gcc
 
-run: $(FILES:=.pyx)
+run: $(FILES:=.pyy)
 
-test: $(FILES:=.pyy)
+test: $(FILES:=.pyz)
 
 travis:
 	make clean
-	ls -al
-	make
 	ls -al
 	make test
 
