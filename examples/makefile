@@ -15,7 +15,7 @@ ifeq ($(shell uname), Darwin)          # Apple
     AUTOPEP8 := autopep8
 else ifeq ($(CI), true)                # Travis CI
     PYTHON   := python3.5
-    PIP      := pip3.5
+    PIP      := pip
     MYPY     := mypy
     PYLINT   := pylint
     COVERAGE := coverage-3.5
@@ -42,18 +42,18 @@ endif
 .pylintrc:
 	$(PYLINT) --disable=locally-disabled --reports=no --generate-rcfile > $@
 
-%.pyx: %.py .pylintrc
+%.pyt: %.py .pylintrc
 	-$(MYPY)   $<
 	-$(PYLINT) $<
 
-%.pyy: %.pyx
-	$(PYTHON) $(<:.pyx=.py)
+%.pyx: %.pyt
+	$(PYTHON) $(<:.pyt=.py)
 
-%.pyz: %.pyx
-	-$(COVERAGE) run    --branch $(<:.pyx=.py)
+%.pyy: %.pyt
+	-$(COVERAGE) run    --branch $(<:.pyt=.py)
 	-$(COVERAGE) report -m
 
-all: $(FILES:=.pyx)
+all: $(FILES:=.pyt)
 
 clean:
 	rm -f  .coverage
@@ -63,9 +63,9 @@ clean:
 docker:
 	docker run -it -v $(PWD):/usr/cs104c -w /usr/cs104c gpdowning/gcc
 
-run: $(FILES:=.pyy)
+run: $(FILES:=.pyx)
 
-test: $(FILES:=.pyz)
+test: $(FILES:=.pyy)
 
 travis:
 	make clean
@@ -98,7 +98,7 @@ versions:
 	$(COVERAGE) --version
 	@echo
 	which $(PYDOC)
-	$(PYDOC) --version
+	-$(PYDOC) --version
 	@echo
 	which $(AUTOPEP8)
 	$(AUTOPEP8) --version
