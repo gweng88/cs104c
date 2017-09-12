@@ -71,7 +71,8 @@ travis:
 	make clean
 	ls -al
 	make test
-	ls -al /home/travis/virtualenv/python3.5.3/bin/*pydoc*
+	ls -al /home/travis/virtualenv/python3.5.3/bin/
+	ls -al /opt/python/3.5.3/bin/
 
 versions:
 	which cmake
