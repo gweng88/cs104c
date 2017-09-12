@@ -70,6 +70,9 @@ test: $(FILES:=.pyy)
 travis:
 	make clean
 	ls -al
+	make BFS
+	make BFS.pyx
+	make BFS.pyy
 	make test
 
 versions:

@@ -8,6 +8,7 @@ python:
 before_install:
     - cat .travis.yml
     - pip install --upgrade pip
+    - pip --version
 
 install:
     - pip install autopep8
@@ -23,5 +24,6 @@ before_script:
 
 script:
     - cat makefile
+    - cat examples/makefile
     - make versions
     - make travis
